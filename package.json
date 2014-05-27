@@ -1,0 +1,13 @@
+{
+  "name"         : "AppointmentGrabber",
+  "version"      : "0.0.1",
+  "description"  : "Simple script that alerts you when an earlier visa appointment date is avaiblable.",
+  "main"         : "server.js",
+  "author"       : "Amit Saurav",
+  "dependencies" : {
+    "express"    : "latest",
+    "request"    : "latest",
+    "cheerio"    : "latest",
+    "aws-sdk"    : "latest"
+  }
+}
