@@ -23,11 +23,11 @@ function callback(error, response, body) {
     var dataSplit = data.split('\r\n');
     var date = dataSplit[1];
     
-    if (date.indexOf('Jul') >= 0 || date.indexOf('Aug') >= 0) {
-	  sendSMS(date);
-	  process.exit(1);
-    } else if (date === null) {
+    if (date === null) {
       sendSMS('Invalid page received.');
+      process.exit(1);
+    } else if (date.indexOf('Jul') >= 0 || date.indexOf('Aug') >= 0) {
+      sendSMS(date);
       process.exit(1);
     } else {
       console.log(new Date() + ': ' + date);
