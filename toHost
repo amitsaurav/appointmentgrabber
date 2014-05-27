@@ -1,1 +1,0 @@
-ssh -i visa-restricted.pem ubuntu@ec2-54-82-195-148.compute-1.amazonaws.com
