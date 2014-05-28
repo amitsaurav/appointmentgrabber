@@ -23,7 +23,7 @@ function callback(error, response, body) {
     var dataSplit = data.split('\r\n');
     var date = dataSplit[1];
     
-    if (date === null) {
+    if (!date) {
       sendSMS('Invalid page received.');
       process.exit(1);
     } else if (date.indexOf('Jul') >= 0 || date.indexOf('Aug') >= 0) {
