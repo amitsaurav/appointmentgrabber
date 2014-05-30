@@ -68,11 +68,11 @@ function sendSMS(message, callback) {
     if (err) {
       console.log(err, err.stack);
     } else {
+      console.log('Sent SMS: ' + message);
       console.log(data);
       if (typeof callback === "function") {
         callback();
       }
-      console.log('Sent SMS: ' + message);
     }
   });
 }
