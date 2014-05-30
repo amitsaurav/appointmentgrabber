@@ -24,18 +24,21 @@ function callback(error, response, body) {
     var date = dataSplit[1];
     
     if (typeof date === "undefined" || date === null) {
-      sendSMS('Invalid page received.');
-      process.exit(1);
+      sendSMS('Invalid page received.', function() {
+        process.exit(1);
+      });
     } else if (date.indexOf('Jul') >= 0 || date.indexOf('Aug') >= 0) {
-      sendSMS(date);
-      process.exit(1);
+      sendSMS('Available date: ' + date, function() {
+        process.exit(1);
+      });
     } else {
       console.log(new Date() + ': ' + date);
     }
   } else {
-      sendSMS('Could not load page.');
+      sendSMS('Could not load page.', function() {
+        process.exit(1);
+      });
       console.log(error);
-      process.exit(1);
   }
 }
 
@@ -54,7 +57,7 @@ function main() {
   request(options, callback);
 }
 
-function sendSMS(message) {
+function sendSMS(message, callback) {
   var params = {
     Message: message,
     Subject: message,
@@ -62,13 +65,16 @@ function sendSMS(message) {
   };
 
   sns.publish(params, function (err, data) {
-    if (err)
+    if (err) {
       console.log(err, err.stack);
-    else
+    } else {
       console.log(data);
+      if (typeof callback === "function") {
+        callback();
+      }
+      console.log('Sent SMS: ' + message);
+    }
   });
-
-  console.log('Sent SMS: ' + message);
 }
 
 sendSMS('Starting grabber!');
