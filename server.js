@@ -20,26 +20,22 @@ function callback(error, response, body) {
   if (!error) {
     var $ = cheerio.load(body);
     var data = $('#appointment_info_table_1').next().text();
-    var dataSplit = data.split('\r\n');
-    var date = dataSplit[1];
-    
-    if (typeof date === "undefined" || date === null) {
-      sendSMS('Invalid page received.', function() {
-        process.exit(1);
-      });
-    } else if (date.indexOf('Jul') >= 0 || date.indexOf('Aug') >= 0) {
-      sendSMS('Available date: ' + date, function() {
-        process.exit(1);
-      });
-    } else {
-      console.log(new Date() + ': ' + date);
-    }
-  } else {
-      sendSMS('Could not load page.', function() {
-        process.exit(1);
-      });
-      console.log(error);
-  }
+    var dateReg = /(\w+\s+(\d+)\s+(\w+)\s+\d+)/;
+
+    if (typeof data === "undefined" || data === null)
+      sendSMS('Invalid page received.');
+    else if (dateReg.test(data)) {
+      var matchedDate = dateReg.exec(data);
+
+      if ((+matchedDate[2] < 26 && matchedDate[3].indexOf('Aug') >= 0) ||
+        matchedDate[3].indexOf('July') >= 0 || matchedDate[3].indexOf('Jun') >= 0)
+        sendSMS('Available date: ' + matchedDate[1]);
+      else
+        console.log(new Date() + ': Later date found: ' + matchedDate[1]);
+    } else
+      console.log(new Date() + ': Date did not match: ' + data);
+  } else
+      sendSMS('Could not load page.');
 }
 
 function main() {
@@ -57,7 +53,7 @@ function main() {
   request(options, callback);
 }
 
-function sendSMS(message, callback) {
+function sendSMS(message) {
   var params = {
     Message: message,
     Subject: message,
@@ -70,9 +66,6 @@ function sendSMS(message, callback) {
     } else {
       console.log('Sent SMS: ' + message);
       console.log(data);
-      if (typeof callback === "function") {
-        callback();
-      }
     }
   });
 }
