@@ -6,6 +6,26 @@ var cheerio = require('cheerio');
 var AWS = require('aws-sdk');
 var app = express();
 
+// Sends alerts when there is a date available before 9/26.
+// Does not deal with years right now.
+var searchBeforeDate = 26;
+var searchBeforeMonth = 9;
+
+var months = {
+  'Jan': 1,
+  'Feb': 2,
+  'Mar': 3,
+  'Apr': 4,
+  'May': 5,
+  'Jun': 6,
+  'Jul': 7,
+  'Aug': 8,
+  'Sep': 9,
+  'Oct': 10,
+  'Nov': 11,
+  'Dec': 12
+};
+
 // Initializing AWS SNS
 AWS.config.update({
   accessKeyId: credentials.accessKeyId,
@@ -26,9 +46,9 @@ function callback(error, response, body) {
       sendSMS('Invalid page received.');
     else if (dateReg.test(data)) {
       var matchedDate = dateReg.exec(data);
+      var matchedMonth = matchedDate[3].substring(0, 3);
 
-      if ((+matchedDate[2] < 26 && matchedDate[3].indexOf('Aug') >= 0) ||
-        matchedDate[3].indexOf('July') >= 0 || matchedDate[3].indexOf('Jun') >= 0)
+      if (+matchedDate[2] < searchBeforeDate && months[matchedMonth] <= searchBeforeMonth)
         sendSMS('Available date: ' + matchedDate[1]);
       else
         console.log(new Date() + ': Later date found: ' + matchedDate[1]);

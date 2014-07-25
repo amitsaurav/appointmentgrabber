@@ -2,6 +2,12 @@
 1. Node.js installed. Detailed instructions to install [here](http://howtonode.org/how-to-install-nodejs)
 2. An AWS account. Sign up [here](http://aws.amazon.com/)!
 
+# Installation Instruction
+1. Clone the project in your local directory and change to the root directory on command line.
+2. Install the program by firing the following command from command line:
+
+        npm install
+
 # Steps to Execute
 1. Create a New SNS Topic in us-east-1 region and create an SMS subsription to your phone number under the new topic. Details [here](http://docs.aws.amazon.com/sns/latest/dg/SMSMessages.html)
 2. Login to the Visa website here: https://usvisa-info.com/en-ca/selfservice/p/reschedule_appointment until you can see the next available date.
@@ -22,6 +28,7 @@
     - Replace XXXX for **accessKeyId** with your AWS account's access key Id.
     - Replace XXXX for **secretAccessKey** with your AWS account's secret key Id.
     - Replace XXXX for **snsTopicArn** with the SNS topic ARN as discovered from step #1.
+
 5. Start the program using:
 
         node server.js
