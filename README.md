@@ -4,7 +4,8 @@
 
 # Installation Instruction
 1. Clone the project in your local directory and change to the root directory on command line.
-2. Install the program by firing the following command from command line:
+2. Open the file **server.js** and edit line numbers 11 and 12 to be the date before which you need your appointment. This helps someone who already has an appointment and wants to be notified if an earlier date opens up. For first timers, just put a date way in the future like 12/31.
+3. Install the program by firing the following command from command line:
 
         npm install
 
